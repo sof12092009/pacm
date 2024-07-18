@@ -328,22 +328,27 @@ def game(): # Главный игровой цикл
         draw_maze()   # Отрисовываем лабиринт
 
         # Draw Pacman
+        #Рисуем изображение Пакмана на экране на позиции, указанной в переменной pacman_pos
         screen.blit(pacman_image, (pacman_pos[0] * GRID_SIZE, pacman_pos[1] * GRID_SIZE))
 
         # Draw ghosts
+        #Рисуем призраков на экране на их соответствующих позициях, цвет призрака определяется из словаря ghost_images
         for ghost in ghosts:
             screen.blit(ghost_images[ghost['color']], (ghost['pos'][0] * GRID_SIZE, ghost['pos'][1] * GRID_SIZE))
 
+#Рисуем счет игрока на экране, передавая переменную score в функцию draw_score
         draw_score(score)
 
+#После отрисовки всех элементов, обновляем экран
         pygame.display.flip()
-        clock.tick(10)
+        clock.tick(10) # Ограничиваем частоту обновления экрана, чтобы игра не происходила слишком быстро
 
 # Main loop
-running = True
-while running:
-    start_screen()
+running = True #Инициализируем переменную running как True, чтобы запустить главный игровой цикл
+while running: #Главный игровой цикл
+    start_screen() # Показываем стартовый экран
     start = False
+    # Цикл проверки событий
     while not start:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -351,19 +356,19 @@ while running:
                 start = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    start = True
+                    start = True # Начинаем игру после нажатия клавиши пробел
 
-    if running:
-        game()
-        restart = False
-        while not restart:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+# проверяем значение переменной running
+    if running: # если игра запущена, вызываем функцию game()
+        game()  # устанавливаем переменную restart в значение
+        restart = False # цикл продолжается, пока переменная restart равна False
+        while not restart: # перебираем все события в очереди
+            for event in pygame.event.get(): # если тип события - выход из игры, устанавливаем running в False и restart в True
+                if event.type == pygame.QUIT:  # если тип события - нажатие клавиши
                     running = False
                     restart = True
-                if event.type == pygame.KEYDOWN:
+                if event.type == pygame.KEYDOWN:  # если нажата клавиша "r", устанавливаем restart в True
                     if event.key == pygame.K_r:
                         restart = True
 
-pygame.quit()
-
+pygame.quit() #завершаем работу Pygame
